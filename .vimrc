@@ -4,23 +4,30 @@ set background=dark
 colorscheme solarized
 set relativenumber
 set number
-"set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
 set tabstop=4 softtabstop=0 noexpandtab shiftwidth=4
-"set laststatus=2
-"let  g:lightline = {'colorscheme': 'solarized'}
 set ignorecase
 set completeopt-=preview
 set clipboard=unnamedplus
+
+" Nerdtree
 nnoremap <C-n> :NERDTreeToggle<CR>
+
+" Tab navigation
 nnoremap <C-l> gt<CR>
 nnoremap <C-h> gT<CR>
-nnoremap <C-c> "+y<CR>
-nnoremap <C-P> "+p<CR>
+
+" Cursor should be block-shaped in insert mode
+set guicursor=i:block
 
 call plug#begin('~/.vim/plugged')
 
+" Auto complete
 Plug 'Valloric/YouCompleteMe'
+
+" Auto bracket and quotes pairing
 Plug 'jiangmiao/auto-pairs'
+
+" File manager; helps switching files
 Plug 'preservim/nerdtree'
 
 call plug#end()
