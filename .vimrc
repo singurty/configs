@@ -15,7 +15,7 @@ nnoremap <C-l> gt<CR>
 nnoremap <C-h> gT<CR>
 
 " Clear search highlights
-nnoremap <esc> :noh<cr><esc>
+nnoremap <CR> :noh<CR><CR>
 " Cursor should be block-shaped in insert mode
 set guicursor=i:block
 
@@ -31,7 +31,13 @@ Plug 'jiangmiao/auto-pairs'
 " Telescope
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+
+" Markdown-preview
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 call plug#end()
+
+" Vimwiki
+Plug 'vimwiki/vimwiki'
 
 " Coc config
 "inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
@@ -46,9 +52,12 @@ call plug#end()
 "      \ <SID>check_back_space() ? "\<Tab>" :
 "      \ coc#refresh()
 "
-"" Telescope config
+" Telescope config
 " Find files using Telescope command-line sugar.
 nnoremap ff <cmd>lua require('telescope.builtin').find_files()<cr>
 nnoremap fg <cmd>lua require('telescope.builtin').live_grep()<cr>
-nnoremap fb <cmd>lua require('telescope.builtin').buffers()<cr>
+nnoremap fb <cmd>lua require('telescope.builtin').file_browser()<cr>
 nnoremap fh <cmd>lua require('telescope.builtin').help_tags()<cr>
+
+" C-p to disable autopairs
+let g:AutoPairsShortcutToggle = '<C-p>'
