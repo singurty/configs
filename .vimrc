@@ -34,10 +34,11 @@ Plug 'nvim-telescope/telescope.nvim'
 
 " Markdown-preview
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+
+"Plug 'morhetz/gruvbox'
 call plug#end()
 
-" Vimwiki
-Plug 'vimwiki/vimwiki'
+"autocmd vimenter * ++nested colorscheme gruvbox
 
 " Coc config
 "inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
