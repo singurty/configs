@@ -20,6 +20,7 @@ require("awful.hotkeys_popup.keys")
 
 -- Widgets
 local cpu_widget = require("widgets.cpu-widget")
+local volume_widget = require("widgets.volume-widget.volume")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -66,13 +67,13 @@ altkey = "Mod1"
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
     awful.layout.suit.tile.right,
-    awful.layout.suit.fair,
+	awful.layout.suit.max,
 }
 -- }}}
 
 -- {{{ Wibar
 -- Create a textclock widget
-mytextclock = wibox.widget.textclock('<span color="#ffffff" font="Ubuntu 14"> %a %b %d %H:%M </span>')
+mytextclock = wibox.widget.textclock('<span color="#ffffff" font="Ubuntu 15"> %a %b %d %H:%M </span>')
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -155,6 +156,7 @@ awful.screen.connect_for_each_screen(function(s)
             layout = wibox.layout.fixed.horizontal,
             wibox.widget.systray(),
 			cpu_widget({ width = 100 }),
+			volume_widget({ widget_type = "vertical_bar" }),
             mytextclock,
             s.mylayoutbox,
         },
@@ -260,14 +262,16 @@ globalkeys = gears.table.join(
 	-- Applications
 	awful.key({ modkey, altkey }, "b", function() awful.spawn("firefox") end,
               {description = "Web browser", group = "applications"}),
-	awful.key({ modkey, altkey }, "h", function() awful.spawn("hexchat") end,
+	awful.key({ modkey, altkey }, "i", function() awful.spawn("hexchat") end,
               {description = "IRC client", group = "applications"}),
 	awful.key({ modkey, altkey }, "f", function() awful.spawn("pcmanfm") end,
 				{description = "File manager", group = "applications"}),
-	awful.key({ modkey, altkey }, "s", function() awful.spawn("flatpak run com.spotify.Client") end,
+	awful.key({ modkey, altkey }, "m", function() awful.spawn("flatpak run com.spotify.Client") end,
 				{description = "Spotify music player", group = "applications"}),
-	awful.key({ modkey, altkey  }, "t", function() awful.spawn("thunderbird") end,
-				{description = "Thunderbird email client", group = "applications"})
+	awful.key({ modkey, altkey  }, "e", function() awful.spawn("thunderbird") end,
+				{description = "Thunderbird email client", group = "applications"}),
+	awful.key({ modkey, altkey }, "r", function() awful.spawn("liferea") end,
+				{description = "Liferea RSS client", group = "application"})
 )
 
 clientkeys = gears.table.join(
