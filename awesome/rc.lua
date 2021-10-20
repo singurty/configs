@@ -18,6 +18,9 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 
+-- Widgets
+local cpu_widget = require("widgets.cpu-widget")
+
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -63,52 +66,13 @@ altkey = "Mod1"
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
     awful.layout.suit.tile.right,
---    awful.layout.suit.floating,
-  --  awful.layout.suit.tile.left,
-  --  awful.layout.suit.tile.bottom,
-  --  awful.layout.suit.tile.top,
     awful.layout.suit.fair,
-  --  awful.layout.suit.fair.horizontal,
-  --  awful.layout.suit.spiral,
-  --  awful.layout.suit.spiral.dwindle,
-  --  awful.layout.suit.max,
-    awful.layout.suit.max.fullscreen,
-    --awful.layout.suit.magnifier,
-  --  awful.layout.suit.corner.nw,
-    -- awful.layout.suit.corner.ne,
-    -- awful.layout.suit.corner.sw,
-    -- awful.layout.suit.corner.se,
 }
 -- }}}
-
--- {{{ Menu
--- Create a launcher widget and a main menu
-myawesomemenu = {
-   { "hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end },
-   { "manual", terminal .. " -e man awesome" },
-   { "edit config", editor_cmd .. " " .. awesome.conffile },
-   { "restart", awesome.restart },
-   { "quit", function() awesome.quit() end },
-}
-
-mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
-                                    { "open terminal", terminal }
-                                  }
-                        })
-
-mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
-                                     menu = mymainmenu })
-
--- Menubar configuration
-menubar.utils.terminal = terminal -- Set the terminal for applications that require it
--- }}}
-
--- Keyboard map indicator and switcher
-mykeyboardlayout = awful.widget.keyboardlayout()
 
 -- {{{ Wibar
 -- Create a textclock widget
-mytextclock = wibox.widget.textclock()
+mytextclock = wibox.widget.textclock('<span color="#ffffff" font="Ubuntu 14"> %a %b %d %H:%M </span>')
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -150,30 +114,10 @@ local tasklist_buttons = gears.table.join(
                                               awful.client.focus.byidx(-1)
                                           end))
 
-local function set_wallpaper(s)
-    -- Wallpaper
-    if beautiful.wallpaper then
-        local wallpaper = beautiful.wallpaper
-        -- If wallpaper is a function, call it with the screen
-        if type(wallpaper) == "function" then
-            wallpaper = wallpaper(s)
-        end
-        gears.wallpaper.maximized(wallpaper, s, true)
-    end
-end
-
--- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
-screen.connect_signal("property::geometry", set_wallpaper)
-
 awful.screen.connect_for_each_screen(function(s)
-    -- Wallpaper
-    set_wallpaper(s)
-
     -- Each screen has its own tag table.
     awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
 
-    -- Create a promptbox for each screen
-    s.mypromptbox = awful.widget.prompt()
     -- Create an imagebox widget which will contain an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
     s.mylayoutbox = awful.widget.layoutbox(s)
@@ -204,15 +148,13 @@ awful.screen.connect_for_each_screen(function(s)
         layout = wibox.layout.align.horizontal,
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
-            mylauncher,
             s.mytaglist,
-            s.mypromptbox,
         },
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            mykeyboardlayout,
             wibox.widget.systray(),
+			cpu_widget({ width = 100 }),
             mytextclock,
             s.mylayoutbox,
         },
@@ -220,18 +162,12 @@ awful.screen.connect_for_each_screen(function(s)
 end)
 -- }}}
 
--- {{{ Mouse bindings
-root.buttons(gears.table.join(
-    awful.button({ }, 3, function () mymainmenu:toggle() end),
-    awful.button({ }, 4, awful.tag.viewnext),
-    awful.button({ }, 5, awful.tag.viewprev)
-))
--- }}}
-
 -- {{{ Key bindings
 globalkeys = gears.table.join(
     awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
-              {description="show help", group="awesome"}),
+              {description="show help", group = "awesome"}),
+	awful.key({ modkey, }, "e", function() awful.spawn(editor_cmd .. " " .. awesome.conffile) end,
+				{description = "Edit awesome config", group = "awesome"}),
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev,
               {description = "view previous", group = "tag"}),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext,
@@ -294,9 +230,9 @@ globalkeys = gears.table.join(
               {description = "increase the number of columns", group = "layout"}),
     awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1, nil, true)    end,
               {description = "decrease the number of columns", group = "layout"}),
-    awful.key({ modkey,           }, "space", function () awful.layout.inc( 1)                end,
-              {description = "select next", group = "layout"}),
-    awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1)                end,
+   -- awful.key({ modkey,           }, "space", function () awful.layout.inc( 1)                end,
+   --           {description = "select next", group = "layout"}),
+    awful.key({ modkey, "Shift"   }, "Return", function () awful.layout.inc(1)                end,
               {description = "select previous", group = "layout"}),
 
     awful.key({ modkey, "Control" }, "n",
@@ -312,27 +248,26 @@ globalkeys = gears.table.join(
               {description = "restore minimized", group = "client"}),
 
     -- Prompt
-    awful.key({ modkey },            "r",     function () awful.spawn("dmenu_run") end,
+    awful.key({ modkey },            "space",     function () awful.spawn("dmenu_run") end,
               {description = "run prompt", group = "launcher"}),
-
-    awful.key({ modkey }, "x",
-              function ()
-                  awful.prompt.run {
-                    prompt       = "Run Lua code: ",
-                    textbox      = awful.screen.focused().mypromptbox.widget,
-                    exe_callback = awful.util.eval,
-                    history_path = awful.util.get_cache_dir() .. "/history_eval"
-                  }
-              end,
-              {description = "lua execute prompt", group = "awesome"}),
-    -- Menubar
-    awful.key({ modkey }, "p", function() menubar.show() end,
-              {description = "show the menubar", group = "launcher"}),
+   	-- Media keys
+	awful.key({ }, "XF86AudioRaiseVolume", function () awful.spawn("amixer -q sset Master 3%+") end,
+				{}),
+	awful.key({ }, "XF86AudioLowerVolume", function () awful.spawn("amixer -q sset Master 3%-") end,
+				{}),
+	awful.key({ }, "XF86AudioPlay", function () awful.spawn("spotifycli --playpause") end,
+				{}),
 	-- Applications
 	awful.key({ modkey, altkey }, "b", function() awful.spawn("firefox") end,
-              {description = "spawn web browser", group = "applications"}),
-	awful.key({modkey, altkey }, "h", function() awful.spawn("hexchat") end,
-              {description = "spawn hexchat IRC client", group="applications"})
+              {description = "Web browser", group = "applications"}),
+	awful.key({ modkey, altkey }, "h", function() awful.spawn("hexchat") end,
+              {description = "IRC client", group = "applications"}),
+	awful.key({ modkey, altkey }, "f", function() awful.spawn("pcmanfm") end,
+				{description = "File manager", group = "applications"}),
+	awful.key({ modkey, altkey }, "s", function() awful.spawn("flatpak run com.spotify.Client") end,
+				{description = "Spotify music player", group = "applications"}),
+	awful.key({ modkey, altkey  }, "t", function() awful.spawn("thunderbird") end,
+				{description = "Thunderbird email client", group = "applications"})
 )
 
 clientkeys = gears.table.join(
@@ -342,9 +277,9 @@ clientkeys = gears.table.join(
             c:raise()
         end,
         {description = "toggle fullscreen", group = "client"}),
-    awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end,
+    awful.key({ modkey,           }, "q",      function (c) c:kill()                         end,
               {description = "close", group = "client"}),
-    awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ,
+    awful.key({ modkey, "Control" }, "f",  awful.client.floating.toggle                     ,
               {description = "toggle floating", group = "client"}),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
               {description = "move to master", group = "client"}),
@@ -571,3 +506,7 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 
 -- Autostart appplications
 awful.spawn.with_shell("nitrogen --restore")
+awful.spawn.with_shell("picom --config=$HOME/.config/picom/picom.conf")
+
+-- Appearance stuff
+beautiful.notification_icon_size = 100
