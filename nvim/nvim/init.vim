@@ -9,12 +9,6 @@ set completeopt-=preview
 set clipboard=unnamedplus
 set laststatus=1
 
-" Tab navigation
-nnoremap <C-l> gt<CR>
-nnoremap <C-h> gT<CR>
-
-" Clear search highlights
-nnoremap <CR> :noh<CR><CR>
 " Cursor should be block-shaped in insert mode
 set guicursor=i:block
 
@@ -23,6 +17,7 @@ call plug#begin('~/.vim/plugged')
 " Auto complete
 "Plug 'ycm-core/YouCompleteMe'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'kevinoid/vim-jsonc'
 
 " Auto bracket and quotes pairing
 Plug 'jiangmiao/auto-pairs'
@@ -43,14 +38,38 @@ call plug#end()
 
 let g:sonokai_disable_italic_comment = 1
 colorscheme sonokai
+" Transparency
 hi Normal guibg=NONE ctermbg=NONE
 
+" Coc config
+
+" use <tab> for trigger completion and navigate to the next complete item
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <Tab>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+" Key-bindings
 " Telescope config
 " Find files using Telescope command-line sugar.
 nnoremap ff <cmd>lua require('telescope.builtin').find_files()<cr>
 nnoremap fg <cmd>lua require('telescope.builtin').live_grep()<cr>
 nnoremap fb <cmd>lua require('telescope.builtin').file_browser()<cr>
 nnoremap fh <cmd>lua require('telescope.builtin').help_tags()<cr>
+" Tab navigation
+nnoremap <C-l> gt<CR>
+nnoremap <C-h> gT<CR>
+
+" Clear search highlights
+nnoremap <CR> :noh<CR><CR>
+" Source init.vim
+nnoremap <C-s> :source $MYVIMRC<CR>
 
 " C-p to toggle autopairs
 let g:AutoPairsShortcutToggle = '<C-p>'
