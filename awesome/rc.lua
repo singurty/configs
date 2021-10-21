@@ -21,6 +21,7 @@ require("awful.hotkeys_popup.keys")
 -- Widgets
 local cpu_widget = require("widgets.cpu-widget")
 local alsabar = require("widgets.alsabar")
+local net =  require("widgets.net")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -76,10 +77,17 @@ awful.layout.layouts = {
 -- Create a textclock widget
 mytextclock = wibox.widget.textclock('<span color="#ffffff" font="TerminessTTF Nerd Font 21"> %a %b %d %H:%M </span>')
 
--- Create a volume widget and get timer
-alsa = alsabar()
-volume_widget = alsa.bar
-volume_timer = alsa.timer
+-- Create widgets
+local alsa = alsabar()
+local volume_widget = alsa.bar
+local volume_update = alsa.update
+local net = net({
+    settings = function()
+        if net_now.state == "up" then net_state = "On"
+        else net_state = "Off" end
+        widget:set_markup('<span color="#94928F" font="TerminessTTF Nerd Font 12">'.. " Net " .. '</span>'.. '<span font="TerminessTTF Nerd Font 12">' .. net_state .. " </span>")
+    end
+})
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -163,6 +171,7 @@ awful.screen.connect_for_each_screen(function(s)
             wibox.widget.systray(),
 			cpu_widget({ width = 100 }),
             volume_widget,
+			net_widget,
             mytextclock,
             s.mylayoutbox,
         },
@@ -259,17 +268,17 @@ globalkeys = gears.table.join(
    	-- Media keys
 	awful.key({ }, "XF86AudioRaiseVolume", function ()
                 awful.spawn.easy_async("amixer -q sset Master 3%+",
-                    function() volume_timer:emit_signal("timeout") end)
+                    volume_update)
               end,
 				{}),
 	awful.key({ }, "XF86AudioLowerVolume", function ()
                 awful.spawn.easy_async("amixer -q sset Master 3%-",
-                    function() volume_timer:emit_signal("timeout") end)
+                    volume_update)
               end,
 				{}),
 	awful.key({ }, "XF86AudioMute", function ()
                 awful.spawn.easy_async("amixer -q sset Master toggle",
-                    function() volume_timer:emit_signal("timeout") end)
+                    volume_update)
               end,
 				{}),
 	awful.key({ }, "XF86AudioPlay", function () awful.spawn("spotifycli --playpause") end,
@@ -500,3 +509,4 @@ awful.spawn.with_shell("picom --config=$HOME/.config/picom/picom.conf")
 beautiful.notification_icon_size = 100
 beautiful.useless_gap = 2.5
 beautiful.gap_single_client = true
+beautiful.font = "TerminessTTF Nerd Font 12"
