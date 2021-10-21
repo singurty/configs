@@ -142,7 +142,7 @@ awful.screen.connect_for_each_screen(function(s)
     }
 
     -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s })
+    s.mywibox = awful.wibar({ position = "top", screen = s, opacity = 0.8 })
 
     -- Add widgets to the wibox
     s.mywibox:setup {
@@ -514,3 +514,4 @@ awful.spawn.with_shell("picom --config=$HOME/.config/picom/picom.conf")
 
 -- Appearance stuff
 beautiful.notification_icon_size = 100
+beautiful.useless_gaps = 10

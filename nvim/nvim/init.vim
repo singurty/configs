@@ -21,8 +21,8 @@ set guicursor=i:block
 call plug#begin('~/.vim/plugged')
 
 " Auto complete
-Plug 'ycm-core/YouCompleteMe'
-"Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"Plug 'ycm-core/YouCompleteMe'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Auto bracket and quotes pairing
 Plug 'jiangmiao/auto-pairs'
@@ -43,6 +43,7 @@ call plug#end()
 
 let g:sonokai_disable_italic_comment = 1
 colorscheme sonokai
+hi Normal guibg=NONE ctermbg=NONE
 
 " Telescope config
 " Find files using Telescope command-line sugar.
