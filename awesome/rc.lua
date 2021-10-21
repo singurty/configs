@@ -257,6 +257,8 @@ globalkeys = gears.table.join(
                 {}),
     awful.key({ }, "XF86AudioPrev", function () awful.spawn("playerctl previous") end,
                 {}),
+    awful.key({ }, "XF86AudioStop", function () awful.spawn("playerctl stop") end,
+                {}),
 	-- Applications
 	awful.key({ modkey, altkey }, "b", function() awful.spawn("firefox") end,
               {description = "Web browser", group = "applications"}),

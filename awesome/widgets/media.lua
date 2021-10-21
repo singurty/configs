@@ -18,9 +18,9 @@ awesome.connect_signal("evil::pctl", function(artist, title, status)
     mpd_play.markup = build_icon(' ')
   else
     mpd_prev.markup = build_icon('  ')
-    mpd_next.markup = build_icon(' ')
-    mpd_song.markup = string.format('<span font="TerminessTTF Nerd Font 20" color="%s">%s</span> - <span color="%s">%s</span>',
-      beautiful.taglist_font, beautiful.xcolor15, artist, beautiful.xcolor10, title)
+    mpd_next.markup = build_icon('  ')
+    mpd_song.markup = string.format('<span font="TerminessTTF Nerd Font Bold 13">%s - %s</span>',
+      artist, title)
       if status == "Playing" then
         mpd_play.markup = build_icon('')
       else
