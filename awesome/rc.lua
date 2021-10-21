@@ -79,7 +79,7 @@ awful.layout.layouts = {
 
 -- {{{ Wibar
 -- Create a textclock widget
-mytextclock = wibox.widget.textclock('<span color="#ffffff" font="TerminessTTF Nerd Font 20"> %a %m/%d %H:%M </span>')
+mytextclock = wibox.widget.textclock('<span color="#ffffff" font="TerminessTTF Nerd Font 20"> %a %m/%d %I:%M </span>')
 
 -- Create widgets
 local alsa = alsabar()
@@ -275,6 +275,8 @@ globalkeys = gears.table.join(
 				{description = "Thunderbird email client", group = "applications"}),
 	awful.key({ modkey, altkey }, "r", function() awful.spawn("liferea") end,
 				{description = "Liferea RSS client", group = "applications"}),
+	awful.key({ modkey, altkey  }, "c", function () awful.spawn("calibre") end,
+				{description = "Calibre e-book application", group = "applications"}),
     -- Screenshot
     awful.key({ }, "Print", function() awful.spawn.with_shell("flameshot full -p $HOME/Pictures/") end,
             {description = "Take a screenshot and save", group = "screenshot"}),
