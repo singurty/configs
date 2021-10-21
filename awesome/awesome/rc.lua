@@ -20,7 +20,7 @@ require("awful.hotkeys_popup.keys")
 
 -- Widgets
 local cpu_widget = require("widgets.cpu-widget")
-local volume_widget = require("widgets.volume-widget.volume")
+local alsabar = require("widgets.alsabar")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -75,6 +75,12 @@ awful.layout.layouts = {
 -- {{{ Wibar
 -- Create a textclock widget
 mytextclock = wibox.widget.textclock('<span color="#ffffff" font="TerminessTTF Nerd Font 21"> %a %b %d %H:%M </span>')
+
+-- Create a volume widget and get timer
+alsa = alsabar()
+volume_widget = alsa.bar
+volume_timer = alsa.timer
+volume_timer:stop()
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -157,7 +163,7 @@ awful.screen.connect_for_each_screen(function(s)
             layout = wibox.layout.fixed.horizontal,
             wibox.widget.systray(),
 			cpu_widget({ width = 100 }),
-			volume_widget({ widget_type = "vertical_bar" }),
+            volume_widget,
             mytextclock,
             s.mylayoutbox,
         },
@@ -252,9 +258,20 @@ globalkeys = gears.table.join(
     awful.key({ modkey },            "space",     function () awful.spawn("dmenu_run") end,
               {description = "run prompt", group = "launcher"}),
    	-- Media keys
-	awful.key({ }, "XF86AudioRaiseVolume", function () awful.spawn("amixer -q sset Master 3%+") end,
+	awful.key({ }, "XF86AudioRaiseVolume", function ()
+                awful.spawn.easy_async("amixer -q sset Master 3%+",
+                    function() volume_timer:emit_signal("timeout") end)
+              end,
 				{}),
-	awful.key({ }, "XF86AudioLowerVolume", function () awful.spawn("amixer -q sset Master 3%-") end,
+	awful.key({ }, "XF86AudioLowerVolume", function ()
+                awful.spawn.easy_async("amixer -q sset Master 3%-",
+                    function() volume_timer:emit_signal("timeout") end)
+              end,
+				{}),
+	awful.key({ }, "XF86AudioMute", function ()
+                awful.spawn.easy_async("amixer -q sset Master toggle",
+                    function() volume_timer:emit_signal("timeout") end)
+              end,
 				{}),
 	awful.key({ }, "XF86AudioPlay", function () awful.spawn("spotifycli --playpause") end,
 				{}),
@@ -465,46 +482,6 @@ client.connect_signal("manage", function (c)
         -- Prevent clients from being unreachable after screen count changes.
         awful.placement.no_offscreen(c)
     end
-end)
-
--- Add a titlebar if titlebars_enabled is set to true in the rules.
-client.connect_signal("request::titlebars", function(c)
-    -- buttons for the titlebar
-    local buttons = gears.table.join(
-        awful.button({ }, 1, function()
-            c:emit_signal("request::activate", "titlebar", {raise = true})
-            awful.mouse.client.move(c)
-        end),
-        awful.button({ }, 3, function()
-            c:emit_signal("request::activate", "titlebar", {raise = true})
-            awful.mouse.client.resize(c)
-        end)
-    )
-
-    awful.titlebar(c) : setup {
-        { -- Left
-            awful.titlebar.widget.iconwidget(c),
-            buttons = buttons,
-            layout  = wibox.layout.fixed.horizontal
-        },
-        { -- Middle
-            { -- Title
-                align  = "center",
-                widget = awful.titlebar.widget.titlewidget(c)
-            },
-            buttons = buttons,
-            layout  = wibox.layout.flex.horizontal
-        },
-        { -- Right
-            awful.titlebar.widget.floatingbutton (c),
-            awful.titlebar.widget.maximizedbutton(c),
-            awful.titlebar.widget.stickybutton   (c),
-            awful.titlebar.widget.ontopbutton    (c),
-            awful.titlebar.widget.closebutton    (c),
-            layout = wibox.layout.fixed.horizontal()
-        },
-        layout = wibox.layout.align.horizontal
-    }
 end)
 
 -- Enable sloppy focus, so that focus follows mouse.
