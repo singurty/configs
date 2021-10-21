@@ -68,12 +68,13 @@ altkey = "Mod1"
 awful.layout.layouts = {
     awful.layout.suit.tile.right,
 	awful.layout.suit.max,
+    awful.layout.suit.floating
 }
 -- }}}
 
 -- {{{ Wibar
 -- Create a textclock widget
-mytextclock = wibox.widget.textclock('<span color="#ffffff" font="Ubuntu 15"> %a %b %d %H:%M </span>')
+mytextclock = wibox.widget.textclock('<span color="#ffffff" font="TerminessTTF Nerd Font 21"> %a %b %d %H:%M </span>')
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -142,7 +143,7 @@ awful.screen.connect_for_each_screen(function(s)
     }
 
     -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s, opacity = 0.8 })
+    s.mywibox = awful.wibar({ position = "top", screen = s, opacity = 0.9 })
 
     -- Add widgets to the wibox
     s.mywibox:setup {
@@ -257,6 +258,10 @@ globalkeys = gears.table.join(
 				{}),
 	awful.key({ }, "XF86AudioPlay", function () awful.spawn("spotifycli --playpause") end,
 				{}),
+    awful.key({ }, "XF86AudioNext", function () awful.spawn("spotifycli --next") end,
+                {}),
+    awful.key({ }, "XF86AudioPrev", function () awful.spawn("spotifycli --prev") end,
+                {}),
 	-- Applications
 	awful.key({ modkey, altkey }, "b", function() awful.spawn("firefox") end,
               {description = "Web browser", group = "applications"}),
@@ -264,7 +269,7 @@ globalkeys = gears.table.join(
               {description = "IRC client", group = "applications"}),
 	awful.key({ modkey, altkey }, "f", function() awful.spawn("pcmanfm") end,
 				{description = "File manager", group = "applications"}),
-	awful.key({ modkey, altkey }, "m", function() awful.spawn("flatpak run com.spotify.Client") end,
+	awful.key({ modkey, altkey }, "s", function() awful.spawn("flatpak run com.spotify.Client") end,
 				{description = "Spotify music player", group = "applications"}),
 	awful.key({ modkey, altkey  }, "e", function() awful.spawn("thunderbird") end,
 				{description = "Thunderbird email client", group = "applications"}),
@@ -517,5 +522,5 @@ awful.spawn.with_shell("picom --config=$HOME/.config/picom/picom.conf")
 
 -- Appearance stuff
 beautiful.notification_icon_size = 100
-beautiful.useless_gaps = 50
+beautiful.useless_gap = 2.5
 beautiful.gap_single_client = true
