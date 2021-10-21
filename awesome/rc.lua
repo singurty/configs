@@ -485,5 +485,6 @@ beautiful.notification_icon_size = 100
 beautiful.useless_gap = 2.5
 beautiful.gap_single_client = true
 beautiful.font = "TerminessTTF Nerd Font 12"
+-- Remove square boxes in taglist buttons
 beautiful.taglist_squares_sel = gears.filesystem.get_configuration_dir()  .. "images/bar.png"
 beautiful.taglist_squares_unsel = gears.filesystem.get_configuration_dir()  .. "images/bar2.png"

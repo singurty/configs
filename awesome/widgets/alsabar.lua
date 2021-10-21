@@ -67,18 +67,6 @@ local function factory(args)
 	local low_image = os.getenv("HOME") .. '/.config/awesome/icons/audio-volume-low-symbolic.svg'
 	local muted_image = os.getenv("HOME") .. '/.config/awesome/icons/audio-volume-muted-symbolic.svg'
 
---    alsabar.bar = wibox.widget {
---        color            = alsabar.colors.unmute,
---        background_color = alsabar.colors.background,
---        forced_height    = height,
---        forced_width     = width,
---        margins          = margins,
---        paddings         = margins,
---        ticks            = ticks,
---        ticks_size       = ticks_size,
---        widget           = wibox.widget.progressbar
---    }
-	
     alsabar.bar = wibox.widget {
 		{
             {

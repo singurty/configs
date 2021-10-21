@@ -40,6 +40,8 @@ let g:sonokai_disable_italic_comment = 1
 colorscheme sonokai
 " Transparency
 hi Normal guibg=NONE ctermbg=NONE
+hi NonText guibg=NONE ctermbg=NONE
+hi EndOfBuffer guibg=NONE ctermbg=NONE
 
 " Coc config
 
@@ -70,6 +72,5 @@ nnoremap <C-h> gT<CR>
 nnoremap <CR> :noh<CR><CR>
 " Source init.vim
 nnoremap <C-s> :source $MYVIMRC<CR>
-
 " C-p to toggle autopairs
 let g:AutoPairsShortcutToggle = '<C-p>'
