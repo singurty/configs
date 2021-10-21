@@ -232,8 +232,6 @@ globalkeys = gears.table.join(
               {description = "increase the number of columns", group = "layout"}),
     awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1, nil, true)    end,
               {description = "decrease the number of columns", group = "layout"}),
-   -- awful.key({ modkey,           }, "space", function () awful.layout.inc( 1)                end,
-   --           {description = "select next", group = "layout"}),
     awful.key({ modkey, "Shift"   }, "Return", function () awful.layout.inc(1)                end,
               {description = "select previous", group = "layout"}),
 
@@ -271,7 +269,12 @@ globalkeys = gears.table.join(
 	awful.key({ modkey, altkey  }, "e", function() awful.spawn("thunderbird") end,
 				{description = "Thunderbird email client", group = "applications"}),
 	awful.key({ modkey, altkey }, "r", function() awful.spawn("liferea") end,
-				{description = "Liferea RSS client", group = "application"})
+				{description = "Liferea RSS client", group = "applications"}),
+    -- Screenshot
+    awful.key({ }, "Print", function() awful.spawn.with_shell("flameshot full -p $HOME/Pictures/") end,
+            {description = "Take a screenshot and save", group = "screenshot"}),
+    awful.key({ "Shift" }, "Print", function() awful.spawn.with_shell("flameshot gui -p $HOME/Pictures") end,
+            {description = "Select a part of the screen to capture", group = "screenshot"})
 )
 
 clientkeys = gears.table.join(
@@ -514,4 +517,5 @@ awful.spawn.with_shell("picom --config=$HOME/.config/picom/picom.conf")
 
 -- Appearance stuff
 beautiful.notification_icon_size = 100
-beautiful.useless_gaps = 10
+beautiful.useless_gaps = 50
+beautiful.gap_single_client = true
