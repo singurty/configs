@@ -80,7 +80,6 @@ mytextclock = wibox.widget.textclock('<span color="#ffffff" font="TerminessTTF N
 alsa = alsabar()
 volume_widget = alsa.bar
 volume_timer = alsa.timer
-volume_timer:stop()
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(

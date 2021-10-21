@@ -108,12 +108,6 @@ local function factory(args)
 		layout = wibox.layout.fixed.horizontal
     }
 
---	alsabar.bar = wibox.widget {
---		image = high_image,
---		resize = true,
---		widget = wibox.widget.imagebox
---	}
-
     alsabar.tooltip = awful.tooltip({ objects = { alsabar.bar } })
 
     function alsabar.update(callback)
@@ -131,6 +125,10 @@ local function factory(args)
                     alsabar.bar:get_children_by_id('bar')[1].color = alsabar.colors.mute
 					alsabar.bar:get_children_by_id('icon')[1].image = muted_image
                 else
+					-- Stop the timer after we succeccessfully get the volume.
+					-- Fixes the race condition where awesome starts before alsa and timer is topped in
+					-- rc.lua
+					alsa.timer:stop()
                     alsabar._playback = "on"
                     alsabar.tooltip:set_text(string.format("%s: %s", alsabar.channel, vol))
                     alsabar.bar:get_children_by_id('bar')[1].color = alsabar.colors.unmute
