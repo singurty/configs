@@ -85,11 +85,13 @@ mytextclock = wibox.widget.textclock('<span color="#ffffff" font="TerminessTTF N
 local alsa = alsabar()
 local volume_widget = alsa.bar
 local volume_update = alsa.update
-local net = net({
+local net_widget = net({
+	iface = "enp1s0",
+	eth_state = "on",
     settings = function()
-        if net_now.state == "up" then net_state = "On"
-        else net_state = "Off" end
-        widget:set_markup('<span color="#94928F" font="TerminessTTF Nerd Font 12">'.. " Net " .. '</span>'.. '<span font="TerminessTTF Nerd Font 12">' .. net_state .. " </span>")
+        if net_now.state == "up" then net_state = "Connected"
+        else net_state = "Disconnected" end
+        widget:set_markup('<span color="#ffffff" font="TerminessTTF Nerd Font 12">'.. " Network | " .. net_state .. " </span>")
     end
 })
 
@@ -155,6 +157,7 @@ awful.screen.connect_for_each_screen(function(s)
             volume_widget,
 			net_widget,
             mytextclock,
+			separator,
             s.mylayoutbox,
         },
     }
