@@ -128,7 +128,7 @@ local function factory(args)
 					-- Stop the timer after we succeccessfully get the volume.
 					-- Fixes the race condition where awesome starts before alsa and timer is topped in
 					-- rc.lua
-					alsa.timer:stop()
+					alsabar.timer:stop()
                     alsabar._playback = "on"
                     alsabar.tooltip:set_text(string.format("%s: %s", alsabar.channel, vol))
                     alsabar.bar:get_children_by_id('bar')[1].color = alsabar.colors.unmute

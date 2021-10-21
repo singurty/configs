@@ -22,6 +22,10 @@ require("awful.hotkeys_popup.keys")
 local cpu_widget = require("widgets.cpu-widget")
 local alsabar = require("widgets.alsabar")
 local net =  require("widgets.net")
+local media = require("widgets.media")
+
+-- Evil daemons
+require("evil.pctl")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -75,7 +79,7 @@ awful.layout.layouts = {
 
 -- {{{ Wibar
 -- Create a textclock widget
-mytextclock = wibox.widget.textclock('<span color="#ffffff" font="TerminessTTF Nerd Font 21"> %a %b %d %H:%M </span>')
+mytextclock = wibox.widget.textclock('<span color="#ffffff" font="TerminessTTF Nerd Font 20"> %a %m/%d %H:%M </span>')
 
 -- Create widgets
 local alsa = alsabar()
@@ -107,27 +111,6 @@ local taglist_buttons = gears.table.join(
                     awful.button({ }, 5, function(t) awful.tag.viewprev(t.screen) end)
                 )
 
-local tasklist_buttons = gears.table.join(
-                     awful.button({ }, 1, function (c)
-                                              if c == client.focus then
-                                                  c.minimized = true
-                                              else
-                                                  c:emit_signal(
-                                                      "request::activate",
-                                                      "tasklist",
-                                                      {raise = true}
-                                                  )
-                                              end
-                                          end),
-                     awful.button({ }, 3, function()
-                                              awful.menu.client_list({ theme = { width = 250 } })
-                                          end),
-                     awful.button({ }, 4, function ()
-                                              awful.client.focus.byidx(1)
-                                          end),
-                     awful.button({ }, 5, function ()
-                                              awful.client.focus.byidx(-1)
-                                          end))
 
 awful.screen.connect_for_each_screen(function(s)
     -- Each screen has its own tag table.
@@ -148,15 +131,10 @@ awful.screen.connect_for_each_screen(function(s)
         buttons = taglist_buttons
     }
 
-    -- Create a tasklist widget
-    s.mytasklist = awful.widget.tasklist {
-        screen  = s,
-        filter  = awful.widget.tasklist.filter.currenttags,
-        buttons = tasklist_buttons
-    }
-
     -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s, opacity = 0.9 })
+    s.mywibox = awful.wibar({ position = "top", screen = s, opacity = 0.8, height = 22 })
+
+	separator = wibox.widget.textbox("<span> | </span>")
 
     -- Add widgets to the wibox
     s.mywibox:setup {
@@ -164,8 +142,12 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
             s.mytaglist,
+			separator,
+			media,
         },
-        s.mytasklist, -- Middle widget
+		{ -- Middle widgets
+			layout = wibox.container.place,
+		},
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             wibox.widget.systray(),
@@ -250,18 +232,6 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Shift"   }, "Return", function () awful.layout.inc(1)                end,
               {description = "select previous", group = "layout"}),
 
-    awful.key({ modkey, "Control" }, "n",
-              function ()
-                  local c = awful.client.restore()
-                  -- Focus restored client
-                  if c then
-                    c:emit_signal(
-                        "request::activate", "key.unminimize", {raise = true}
-                    )
-                  end
-              end,
-              {description = "restore minimized", group = "client"}),
-
     -- Prompt
     awful.key({ modkey },            "space",     function () awful.spawn("dmenu_run") end,
               {description = "run prompt", group = "launcher"}),
@@ -281,11 +251,11 @@ globalkeys = gears.table.join(
                     volume_update)
               end,
 				{}),
-	awful.key({ }, "XF86AudioPlay", function () awful.spawn("spotifycli --playpause") end,
+	awful.key({ }, "XF86AudioPlay", function () awful.spawn("playerctl play-pause") end,
 				{}),
-    awful.key({ }, "XF86AudioNext", function () awful.spawn("spotifycli --next") end,
+    awful.key({ }, "XF86AudioNext", function () awful.spawn("playerctl next") end,
                 {}),
-    awful.key({ }, "XF86AudioPrev", function () awful.spawn("spotifycli --prev") end,
+    awful.key({ }, "XF86AudioPrev", function () awful.spawn("playerctl previous") end,
                 {}),
 	-- Applications
 	awful.key({ modkey, altkey }, "b", function() awful.spawn("firefox") end,
@@ -510,3 +480,5 @@ beautiful.notification_icon_size = 100
 beautiful.useless_gap = 2.5
 beautiful.gap_single_client = true
 beautiful.font = "TerminessTTF Nerd Font 12"
+beautiful.taglist_squares_sel = gears.filesystem.get_configuration_dir()  .. "images/bar.png"
+beautiful.taglist_squares_unsel = gears.filesystem.get_configuration_dir()  .. "images/bar2.png"
