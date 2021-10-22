@@ -78,7 +78,7 @@ awful.layout.layouts = {
 
 -- {{{ Wibar
 -- Create a textclock widget
-mytextclock = wibox.widget.textclock('<span color="#ffffff" font="TerminessTTF Nerd Font 20"> %a %m/%d %I:%M </span>')
+mytextclock = wibox.widget.textclock('<span font="TerminessTTF Nerd Font 15"> %a %m/%d %I:%M </span>')
 
 -- Create widgets
 local alsa = alsabar()
@@ -133,9 +133,9 @@ awful.screen.connect_for_each_screen(function(s)
     }
 
     -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s, opacity = 0.8, height = 22 })
+    s.mywibox = awful.wibar({ position = "top", screen = s, opacity = 0.8, height = 22, fg = '#ede7e7' })
 
-	local separator = wibox.widget.textbox("<span> | </span>")
+	local separator = wibox.widget.textbox(" | ")
 
     -- Add widgets to the wibox
     s.mywibox:setup {
@@ -188,8 +188,6 @@ globalkeys = gears.table.join(
         end,
         {description = "focus previous by index", group = "client"}
     ),
-    awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
-              {description = "show main menu", group = "awesome"}),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end,

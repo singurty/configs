@@ -3,8 +3,8 @@ local wibox = require("wibox")
 local beautiful = require("beautiful")
 
 local function build_icon (icon)
-  return string.format('<span color="%s" font="%s 12">%s</span> ',
-    beautiful.fg_normal, beautiful.iconFont, icon)
+  return string.format('<span font="%s 12">%s</span> ',
+    beautiful.iconFont, icon)
 end
 
 local mpd_play = wibox.widget.textbox(build_icon(' '))

@@ -7,7 +7,7 @@ set tabstop=4 softtabstop=0 noexpandtab shiftwidth=4
 set ignorecase
 set completeopt-=preview
 set clipboard=unnamedplus
-set laststatus=1
+set laststatus=2
 
 " Cursor should be block-shaped in insert mode
 set guicursor=i:block
@@ -34,17 +34,28 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend upda
 " Colorschemes
 Plug 'morhetz/gruvbox'
 Plug 'sainnhe/sonokai'
+
+Plug 'itchyny/lightline.vim'
+
 call plug#end()
 
+" Lightline
+let g:lightline = {'colorscheme' : 'sonokai'}
+
+" Sonokai
+if has('termguicolors')
+	set termguicolors
+endif
+let g:sonokai_style = 'shusia'
 let g:sonokai_disable_italic_comment = 1
 colorscheme sonokai
+
 " Transparency
 hi Normal guibg=NONE ctermbg=NONE
 hi NonText guibg=NONE ctermbg=NONE
 hi EndOfBuffer guibg=NONE ctermbg=NONE
 
-" Coc config
-
+" Coc
 " use <tab> for trigger completion and navigate to the next complete item
 function! s:check_back_space() abort
   let col = col('.') - 1
