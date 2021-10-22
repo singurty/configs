@@ -12,7 +12,6 @@ local wibox = require("wibox")
 local beautiful = require("beautiful")
 -- Notification library
 local naughty = require("naughty")
-local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
@@ -136,7 +135,7 @@ awful.screen.connect_for_each_screen(function(s)
     -- Create the wibox
     s.mywibox = awful.wibar({ position = "top", screen = s, opacity = 0.8, height = 22 })
 
-	separator = wibox.widget.textbox("<span> | </span>")
+	local separator = wibox.widget.textbox("<span> | </span>")
 
     -- Add widgets to the wibox
     s.mywibox:setup {
@@ -234,6 +233,16 @@ globalkeys = gears.table.join(
               {description = "decrease the number of columns", group = "layout"}),
     awful.key({ modkey, "Shift"   }, "Return", function () awful.layout.inc(1)                end,
               {description = "select previous", group = "layout"}),
+	awful.key({ modkey, "Control" }, "n",
+              function ()
+                  local c = awful.client.restore()
+                  -- Focus restored client
+                  if c then
+                      client.focus = c
+                      c:raise()
+                  end
+              end,
+              {description = "restore minimized", group = "client"}),
 
     -- Prompt
     awful.key({ modkey },            "space",     function () awful.spawn("dmenu_run") end,
@@ -277,6 +286,8 @@ globalkeys = gears.table.join(
 				{description = "Liferea RSS client", group = "applications"}),
 	awful.key({ modkey, altkey  }, "c", function () awful.spawn("calibre") end,
 				{description = "Calibre e-book application", group = "applications"}),
+	awful.key({ modkey, altkey }, "o", function () awful.spawn("obs") end,
+				{description = "OBS Studio", group = "applications"}),
     -- Screenshot
     awful.key({ }, "Print", function() awful.spawn.with_shell("flameshot full -p $HOME/Pictures/") end,
             {description = "Take a screenshot and save", group = "screenshot"}),
@@ -297,8 +308,6 @@ clientkeys = gears.table.join(
               {description = "toggle floating", group = "client"}),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
               {description = "move to master", group = "client"}),
-    awful.key({ modkey,           }, "o",      function (c) c:move_to_screen()               end,
-              {description = "move to screen", group = "client"}),
     awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end,
               {description = "toggle keep on top", group = "client"}),
     awful.key({ modkey,           }, "n",
@@ -313,19 +322,7 @@ clientkeys = gears.table.join(
             c.maximized = not c.maximized
             c:raise()
         end ,
-        {description = "(un)maximize", group = "client"}),
-    awful.key({ modkey, "Control" }, "m",
-        function (c)
-            c.maximized_vertical = not c.maximized_vertical
-            c:raise()
-        end ,
-        {description = "(un)maximize vertically", group = "client"}),
-    awful.key({ modkey, "Shift"   }, "m",
-        function (c)
-            c.maximized_horizontal = not c.maximized_horizontal
-            c:raise()
-        end ,
-        {description = "(un)maximize horizontally", group = "client"})
+        {description = "(un)maximize", group = "client"})
 )
 
 -- Bind all key numbers to tags.
@@ -442,15 +439,6 @@ awful.rules.rules = {
           "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
         }
       }, properties = { floating = true }},
-
-    -- Add titlebars to normal clients and dialogs
-    { rule_any = {type = { "normal", "dialog" }
-      }, properties = { titlebars_enabled = false }
-    },
-
-    -- Set Firefox to always map on the tag named "2" on screen 1.
-    -- { rule = { class = "Firefox" },
-    --   properties = { screen = 1, tag = "2" } },
 }
 -- }}}
 
