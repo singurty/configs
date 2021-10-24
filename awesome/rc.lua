@@ -276,7 +276,7 @@ globalkeys = gears.table.join(
               {description = "IRC client", group = "applications"}),
 	awful.key({ modkey, altkey }, "f", function() awful.spawn("pcmanfm") end,
 				{description = "File manager", group = "applications"}),
-	awful.key({ modkey, altkey }, "s", function() awful.spawn("flatpak run com.spotify.Client") end,
+	awful.key({ modkey, altkey }, "s", function() awful.spawn("spotify") end,
 				{description = "Spotify music player", group = "applications"}),
 	awful.key({ modkey, altkey  }, "e", function() awful.spawn("thunderbird") end,
 				{description = "Thunderbird email client", group = "applications"}),
@@ -453,11 +453,6 @@ client.connect_signal("manage", function (c)
         -- Prevent clients from being unreachable after screen count changes.
         awful.placement.no_offscreen(c)
     end
-end)
-
--- Enable sloppy focus, so that focus follows mouse.
-client.connect_signal("mouse::enter", function(c)
-    c:emit_signal("request::activate", "mouse_enter", {raise = false})
 end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)

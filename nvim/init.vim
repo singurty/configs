@@ -8,9 +8,11 @@ set ignorecase
 set completeopt-=preview
 set clipboard=unnamedplus
 set laststatus=2
+set termguicolors
+set mouse=a
 
 " Cursor should be block-shaped in insert mode
-set guicursor=i:block
+"set guicursor=i:block
 
 call plug#begin('~/.vim/plugged')
 
@@ -31,11 +33,13 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': 
 
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 
+Plug 'itchyny/lightline.vim'
+
 " Colorschemes
 Plug 'morhetz/gruvbox'
 Plug 'sainnhe/sonokai'
-
-Plug 'itchyny/lightline.vim'
+Plug 'tjdevries/colorbuddy.vim'
+Plug 'tjdevries/gruvbuddy.nvim'
 
 call plug#end()
 
@@ -49,6 +53,8 @@ endif
 let g:sonokai_style = 'shusia'
 let g:sonokai_disable_italic_comment = 1
 colorscheme sonokai
+
+"lua require('colorbuddy').colorscheme('gruvbuddy')
 
 " Transparency
 hi Normal guibg=NONE ctermbg=NONE
