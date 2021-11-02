@@ -73,6 +73,8 @@ inoremap <silent><expr> <Tab>
       \ <SID>check_back_space() ? "\<Tab>" :
       \ coc#refresh()
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" disable for markdown files
+autocmd FileType markdown let b:coc_suggest_disable = 1
 
 " Key-bindings
 " Telescope config

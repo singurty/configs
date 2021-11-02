@@ -286,6 +286,10 @@ globalkeys = gears.table.join(
 				{description = "Calibre e-book application", group = "applications"}),
 	awful.key({ modkey, altkey }, "o", function () awful.spawn("obs") end,
 				{description = "OBS Studio", group = "applications"}),
+	awful.key({ modkey, altkey }, "a", function () awful.spawn("anki") end,
+				{description = "Anki flashcard", group = "applications"}),
+	awful.key({ modkey, altkey }, "p", function () awful.spawn("pomatez") end,
+				{description = "Pomatez pomodoro timer", group = "applications"}),
     -- Screenshot
     awful.key({ }, "Print", function() awful.spawn.with_shell("flameshot full -p $HOME/Pictures/") end,
             {description = "Take a screenshot and save", group = "screenshot"}),
@@ -469,5 +473,5 @@ beautiful.useless_gap = 2.5
 beautiful.gap_single_client = true
 beautiful.font = "TerminessTTF Nerd Font 12"
 -- Remove square boxes in taglist buttons
-beautiful.taglist_squares_sel = gears.filesystem.get_configuration_dir()  .. "images/bar.png"
-beautiful.taglist_squares_unsel = gears.filesystem.get_configuration_dir()  .. "images/bar2.png"
+beautiful.taglist_squares_sel = ""
+beautiful.taglist_squares_unsel = ""
