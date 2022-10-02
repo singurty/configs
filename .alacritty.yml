@@ -56,7 +56,7 @@ window:
   # Values for `decorations` (macOS only):
   #     - transparent: Title bar, transparent background and title bar buttons
   #     - buttonless: Title bar, transparent background and no title bar buttons
-  decorations: none
+  decorations: full
 
   # Startup Mode (changes require restart)
   #
@@ -90,6 +90,7 @@ window:
   #history: 10000
   # Scrolling distance multiplier.
   #multiplier: 3
+  opacity: 1
 
 # Font configuration
 font:
@@ -344,9 +345,6 @@ bell:
   #command: None
   # Background opacity
   #
-# Window opacity as a floating point number from `0.0` to `1.0`.
-# The value `0.0` is completely transparent and `1.0` is opaque.
-background_opacity: 0.95
 #selection:
 # This string contains all characters that are used as separators for
 # "semantic words" in Alacritty.

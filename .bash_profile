@@ -17,5 +17,5 @@ export PATH
 # export SYSTEMD_PAGER=
 
 export EDITOR=nvim
-export MAKEFLAGS="-j7"
+export MAKEFLAGS="-j6"
 export PATH="/home/hammer/go/bin":$PATH

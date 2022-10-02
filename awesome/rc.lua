@@ -152,7 +152,7 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             wibox.widget.systray(),
-			cpu_widget({ width = 100 }),
+--			cpu_widget({ width = 100 }),
             volume_widget,
 			net_widget,
             mytextclock,
@@ -278,22 +278,20 @@ globalkeys = gears.table.join(
 				{description = "File manager", group = "applications"}),
 	awful.key({ modkey, altkey }, "s", function() awful.spawn("spotify") end,
 				{description = "Spotify music player", group = "applications"}),
-	awful.key({ modkey, altkey  }, "e", function() awful.spawn("thunderbird") end,
-				{description = "Thunderbird email client", group = "applications"}),
 	awful.key({ modkey, altkey }, "r", function() awful.spawn("liferea") end,
 				{description = "Liferea RSS client", group = "applications"}),
 	awful.key({ modkey, altkey  }, "c", function () awful.spawn("calibre") end,
 				{description = "Calibre e-book application", group = "applications"}),
 	awful.key({ modkey, altkey }, "o", function () awful.spawn("obs") end,
 				{description = "OBS Studio", group = "applications"}),
-	awful.key({ modkey, altkey }, "a", function () awful.spawn("anki") end,
+	awful.key({ modkey, altkey }, "a", function () awful.spawn.with_shell('QTWEBENGINE_CHROMIUM_FLAGS="--no-sandbox" anki') end,
 				{description = "Anki flashcard", group = "applications"}),
 	awful.key({ modkey, altkey }, "p", function () awful.spawn("pomatez") end,
 				{description = "Pomatez pomodoro timer", group = "applications"}),
     -- Screenshot
     awful.key({ }, "Print", function() awful.spawn.with_shell("flameshot full -p $HOME/Pictures/") end,
             {description = "Take a screenshot and save", group = "screenshot"}),
-    awful.key({ "Shift" }, "Print", function() awful.spawn.with_shell("flameshot gui -p $HOME/Pictures") end,
+    awful.key({ "Shift" }, "Print", function() awful.spawn.with_shell("flameshot gui") end,
             {description = "Select a part of the screen to capture", group = "screenshot"})
 )
 
@@ -459,28 +457,29 @@ client.connect_signal("manage", function (c)
     end
 end)
 
-client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
+--client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
+client.connect_signal("focus", function(c) c.border_color = "#FF0000" end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 
 -- Enable sloppy focus, so that focus follows mouse.
-client.connect_signal("mouse::enter", function(c)
-    c:emit_signal("request::activate", "mouse_enter", {raise = false})
-end)
-
-client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
-client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+--client.connect_signal("mouse::enter", function(c)
+--    c:emit_signal("request::activate", "mouse_enter", {raise = false})
+--end)
+--
+--client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
+--client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 
 -- Autostart appplications
-awful.spawn.with_shell("nitrogen --restore")
+awful.spawn("nitrogen --restore")
 awful.spawn.with_shell("picom --config=$HOME/.config/picom/picom.conf")
 
 -- Appearance stuff
 beautiful.notification_icon_size = 100
-beautiful.useless_gap = 2.5
-beautiful.gap_single_client = true
+--beautiful.useless_gap = 2.5
+--beautiful.gap_single_client = true
 beautiful.font = "TerminessTTF Nerd Font 12"
 -- Remove square boxes in taglist buttons
-beautiful.taglist_squares_sel = ""
-beautiful.taglist_squares_unsel = ""
+--beautiful.taglist_squares_sel = ""
+--beautiful.taglist_squares_unsel = ""

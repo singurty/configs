@@ -27,6 +27,7 @@ Plug 'jiangmiao/auto-pairs'
 " Telescope
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-file-browser.nvim'
 
 " Markdown-preview
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
@@ -52,14 +53,14 @@ if has('termguicolors')
 endif
 let g:sonokai_style = 'shusia'
 let g:sonokai_disable_italic_comment = 1
-colorscheme sonokai
+colorscheme gruvbox
 
 "lua require('colorbuddy').colorscheme('gruvbuddy')
 
 " Transparency
-"hi Normal guibg=NONE ctermbg=NONE
-"hi NonText guibg=NONE ctermbg=NONE
-"hi EndOfBuffer guibg=NONE ctermbg=NONE
+hi Normal guibg=NONE ctermbg=NONE
+hi NonText guibg=NONE ctermbg=NONE
+hi EndOfBuffer guibg=NONE ctermbg=NONE
 
 " Coc
 " use <tab> for trigger completion and navigate to the next complete item
@@ -75,13 +76,16 @@ colorscheme sonokai
 "inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 "
 
-" Key-bindings
+
 " Telescope config
 " Find files using Telescope command-line sugar.
-nnoremap ff <cmd>lua require('telescope.builtin').find_files()<cr>
-nnoremap fg <cmd>lua require('telescope.builtin').live_grep()<cr>
-nnoremap fb <cmd>lua require('telescope.builtin').file_browser()<cr>
-nnoremap fh <cmd>lua require('telescope.builtin').help_tags()<cr>
+nnoremap ff <cmd>Telescope find_files<cr>
+nnoremap fg <cmd>Telescope live_grep<cr>
+nnoremap fb <cmd>Telescope file_browser<cr>
+nnoremap fh <cmd>Telescope help_tags<cr>
+
+lua require("telescope").load_extension "file_browser"
+
 " Tab navigation
 nnoremap <C-l> gt<CR>
 nnoremap <C-h> gT<CR>
