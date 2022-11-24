@@ -1,0 +1,37 @@
+! solarized theme
+! foreground/background
+! black
+URxvt.color0  : #848089
+URxvt.color8  : #1a181a
+! red
+URxvt.color1  : #0xf85e84
+URxvt.color9  : #0xf85e84
+! green
+URxvt.color2  : #9ecd6f
+URxvt.color10 : #9ecd6f
+! yellow
+URxvt.color3  : #e5c463
+URxvt.color11 : #e5c463
+! blue
+URxvt.color4  : #7accd7
+URxvt.color12 : #7accd7
+! magenta
+URxvt.color5  : #ab9df2
+URxvt.color13 : #ab9df2
+! cyan
+URxvt.color6  : #ef9062
+URxvt.color14 : #ef9062
+! white
+URxvt.color7  : #e3e1e4
+URxvt.color15 : #e3e1e4
+
+URxvt*background: #000000
+URxvt*foreground: #e3e1e4
+
+URxvt*font: xft:TerminessTTF Nerd Font-Regular:pixelsize=19:antialias=true
+URxvt*boldFont: xft:TerminessTTF Nerd Font-Bold:pixelsize=19
+URxvt*italicFont: xft:TerminessTTF Nerd Font-Italic:pixelsize=19
+URxvt*letterSpace: 2
+
+! remove scrollbars
+URxvt.scrollBar: false

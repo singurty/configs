@@ -56,7 +56,7 @@ end
 beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "alacritty"
+terminal = "urxvt"
 editor = "nvim"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -284,7 +284,7 @@ globalkeys = gears.table.join(
 				{description = "Calibre e-book application", group = "applications"}),
 	awful.key({ modkey, altkey }, "o", function () awful.spawn("obs") end,
 				{description = "OBS Studio", group = "applications"}),
-	awful.key({ modkey, altkey }, "a", function () awful.spawn.with_shell('QTWEBENGINE_CHROMIUM_FLAGS="--no-sandbox" anki') end,
+	awful.key({ modkey, altkey }, "a", function () awful.spawn("anki") end,
 				{description = "Anki flashcard", group = "applications"}),
 	awful.key({ modkey, altkey }, "p", function () awful.spawn("pomatez") end,
 				{description = "Pomatez pomodoro timer", group = "applications"}),
@@ -405,7 +405,8 @@ awful.rules.rules = {
                      keys = clientkeys,
                      buttons = clientbuttons,
                      screen = awful.screen.preferred,
-                     placement = awful.placement.no_overlap+awful.placement.no_offscreen
+                     placement = awful.placement.no_overlap+awful.placement.no_offscreen,
+					 size_hints_honor = false
      }
     },
 

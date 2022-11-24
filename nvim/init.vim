@@ -22,6 +22,8 @@ Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lock
 Plug 'kevinoid/vim-jsonc'
 
 " Auto bracket and quotes pairing
+"Plug 'jiangmiao/auto-pairs'
+Plug 'tpope/vim-surround'
 Plug 'jiangmiao/auto-pairs'
 
 " Telescope
@@ -45,22 +47,20 @@ Plug 'tjdevries/gruvbuddy.nvim'
 call plug#end()
 
 " Lightline
-let g:lightline = {'colorscheme' : 'sonokai'}
+"let g:lightline = {'colorscheme' : 'sonokai'}
 
 " Sonokai
-if has('termguicolors')
-	set termguicolors
-endif
-let g:sonokai_style = 'shusia'
+let g:sonokai_style = 'maia'
 let g:sonokai_disable_italic_comment = 1
-colorscheme gruvbox
+
+colorscheme sonokai
 
 "lua require('colorbuddy').colorscheme('gruvbuddy')
 
 " Transparency
-hi Normal guibg=NONE ctermbg=NONE
-hi NonText guibg=NONE ctermbg=NONE
-hi EndOfBuffer guibg=NONE ctermbg=NONE
+"hi Normal guibg=NONE ctermbg=NONE
+"hi NonText guibg=NONE ctermbg=NONE
+"hi EndOfBuffer guibg=NONE ctermbg=NONE
 
 " Coc
 " use <tab> for trigger completion and navigate to the next complete item
